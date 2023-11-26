@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
+ 
 import 'package:quick_blue/models.dart';
 import 'package:quick_blue/quick_blue.dart';
 
@@ -37,15 +38,17 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  StreamSubscription<BlueScanResult>? _subscription;
+  StreamSubscription<BlueScanResult>? subscription;
 
   @override
   void initState() {
+ 
+
     super.initState();
     if (kDebugMode) {
       QuickBlue.setLogger(Logger("example"));
     }
-      QuickBlue.isBluetoothAvailable();
+    QuickBlue.isBluetoothAvailable();
 
     QuickBlue.setConnectionHandler((deviceId, state) {
       print("CONNECTION ID" + deviceId);
@@ -54,7 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
       QuickBlue.readValue(deviceId, "service", "characteristic");
     });
 
-    _subscription = QuickBlue.scanResultStream.listen((result) {
+    subscription = QuickBlue.scanResultStream.listen((result) {
       if (!_scanResults.any((r) => r.deviceId == result.deviceId)) {
         setState(() => _scanResults.add(result));
       }
@@ -77,7 +80,7 @@ class _MyHomePageState extends State<MyHomePage> {
             color: Colors.blue,
           ),
           _buildButtons(),
-          _buildListView(),
+          _buildListView(), 
           SizedBox(
             height: 20,
           ),
